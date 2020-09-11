@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @RequestMapping("pi")
 public class PiController {
     final GpioController gpio = GpioFactory.getInstance();
-    GpioPinDigitalOutput pin11 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11, "MyLed", PinState.LOW);
+    GpioPinDigitalOutput pin11 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_00, "MyLed", PinState.LOW);
 
     /**
      * test
