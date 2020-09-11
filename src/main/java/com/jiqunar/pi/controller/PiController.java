@@ -1,9 +1,6 @@
 package com.jiqunar.pi.controller;
 
-import com.jiqunar.pi.util.PiUtil;
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioPinDigitalOutput;
-import com.pi4j.io.gpio.PinState;
+import com.pi4j.io.gpio.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,8 +16,8 @@ import java.time.LocalDateTime;
 @RestController
 @RequestMapping("pi")
 public class PiController {
-    final GpioController gpio = PiUtil.getGpioController();
-    final GpioPinDigitalOutput pin11 = PiUtil.getGpio11();
+    final GpioController gpio = GpioFactory.getInstance();
+    GpioPinDigitalOutput pin11 = gpio.provisionDigitalOutputPin(RaspiPin.GPIO_11, "MyLed", PinState.LOW);
 
     /**
      * test
@@ -40,11 +37,10 @@ public class PiController {
     @GetMapping("led")
     public String led(Integer state) {
         String result = "";
-        pin11.setShutdownOptions(true, PinState.LOW);
         if (state == 0) {
-            pin11.low();
+            pin11.setState(PinState.LOW);
         } else {
-            pin11.high();
+            pin11.setState(PinState.HIGH);
         }
         if (pin11.isHigh()) {
             result = "已开启";
